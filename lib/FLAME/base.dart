@@ -1,5 +1,3 @@
-import 'package:commanders/FLAME/basepage.dart';
-import 'package:commanders/FLAME/bot.dart';
 import 'package:commanders/FLAME/commanders.dart';
 import 'package:commanders/globals.dart';
 import 'package:flame/components.dart';
@@ -30,10 +28,7 @@ class Base extends RectangleComponent with TapCallbacks, HasGameReference<Comman
   Future<void> onTapDown(TapDownEvent event) async {
     super.onTapDown(event);
     if (status == BaseStatus.mine) {
-      var result = await game.router.pushAndWait(BasePage(base: this, value: Bot(position: position, velocity: Vector2.zero(), status: BotStatus.mine, radius: botRadius)));
-      if (result != null) {
-        game.world.add(result);
-      }
+      game.overlays.add('BasePage');
     }
   }
 }

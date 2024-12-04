@@ -8,6 +8,16 @@ class PlayArea extends RectangleComponent with HasGameReference<CommandersGame> 
   @override
   Future<void> onLoad() async {
     super.onLoad();
-    size = Vector2(game.width, game.height);
+    size = Vector2(game.width, game.height - 50);
+  }
+}
+
+class MenuArea extends RectangleComponent with HasGameReference<CommandersGame> {
+  MenuArea() : super(children: []);
+
+  @override
+  Future<void> onLoad() async {
+    super.onLoad();
+    size = Vector2(game.width, 50);
   }
 }

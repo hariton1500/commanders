@@ -42,6 +42,10 @@ class Bot extends CircleComponent with CollisionCallbacks, HasGameRef<Commanders
       if (isCaptureBases) {
         //move to capture neutral and enemy bases
         //find closest base
+        if (game.world.children.query<Base>().isEmpty) {
+          velocity = Vector2.zero();
+          return;
+        }
         targetBase = game.world.children.query<Base>().where((element) => element.status == BaseStatus.neutral || element.status == BaseStatus.enemies).reduce((value, element) => (value.position - position).length < (element.position - position).length ? value : element);
         //print('targetBase: ${targetBase?.position.toString()}');
         if (targetBase != null) {
@@ -53,6 +57,10 @@ class Bot extends CircleComponent with CollisionCallbacks, HasGameRef<Commanders
     } else {
       if (isCaptureBases) {
       //move to enemy base
+        if (game.world.children.query<Base>().isEmpty) {
+          velocity = Vector2.zero();
+          return;
+        }
         targetBase = game.world.children.query<Base>().where((element) => element.status == BaseStatus.neutral || element.status == BaseStatus.mine).reduce((value, element) => (value.position - position).length < (element.position - position).length ? value : element);
         if (targetBase != null) {
           velocity = (targetBase!.position - position).normalized() * botSpeed;

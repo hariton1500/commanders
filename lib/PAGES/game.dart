@@ -1,4 +1,5 @@
 import 'package:commanders/FLAME/commanders.dart';
+import 'package:commanders/PAGES/basepage.dart';
 import 'package:commanders/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/game.dart';
@@ -39,7 +40,7 @@ class _GamePageState extends State<GamePage> {
           ),
           child: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(0),
               child: Center(
                 child: FittedBox(
                   child: SizedBox(
@@ -47,6 +48,9 @@ class _GamePageState extends State<GamePage> {
                     height: gameHeight,
                     child: GameWidget(
                       game: game,
+                      overlayBuilderMap: {
+                        'BasePage': (_, game_) => BasePage(game: game)
+                      },
                     ),
                   ),
                 ),

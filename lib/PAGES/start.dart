@@ -11,7 +11,7 @@ class StartPage extends StatefulWidget {
 
 class _StartPageState extends State<StartPage> {
 
-  int basesCount = 10;
+  //int basesCount = 10;
 
   @override
   Widget build(BuildContext context) {
