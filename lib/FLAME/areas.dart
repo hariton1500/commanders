@@ -1,6 +1,7 @@
 import 'package:commanders/FLAME/commanders.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flutter/material.dart';
 
 class PlayArea extends RectangleComponent with HasGameReference<CommandersGame> {
   PlayArea() : super(children: [RectangleHitbox()]);
@@ -19,5 +20,7 @@ class MenuArea extends RectangleComponent with HasGameReference<CommandersGame> 
   Future<void> onLoad() async {
     super.onLoad();
     size = Vector2(game.width, 50);
+    position = Vector2(0, game.height - 50);
+    paint.color = Colors.grey;
   }
 }

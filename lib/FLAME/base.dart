@@ -28,6 +28,7 @@ class Base extends RectangleComponent with TapCallbacks, HasGameReference<Comman
   Future<void> onTapDown(TapDownEvent event) async {
     super.onTapDown(event);
     if (status == BaseStatus.mine) {
+      pressedBase = this;
       game.overlays.add('BasePage');
     }
   }

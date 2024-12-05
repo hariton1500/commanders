@@ -71,6 +71,7 @@ class _StartPageState extends State<StartPage> {
               ),
             ),
             TextButton(onPressed: () {
+              startGameTime = DateTime.now();
               //start game
               //load map
               gameWidth = MediaQuery.of(context).size.width;
