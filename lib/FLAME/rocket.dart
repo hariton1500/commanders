@@ -26,7 +26,10 @@ class Rocket extends CircleComponent with CollisionCallbacks, HasGameRef<Command
     velocity = (targetBot.position - position).normalized() * rocketSpeed;
     position += velocity * dt;
     if (position.distanceTo(targetBot.position) <= targetBot.radius + radius) {
-      game.world.remove(targetBot);
+      try {
+        shooterBot.rocket = null;
+        targetBot.removeFromParent();
+      } catch (e) {}
       game.world.remove(this);
     }
   }

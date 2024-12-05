@@ -1,3 +1,4 @@
+import 'package:commanders/FLAME/bot.dart';
 import 'package:commanders/FLAME/commanders.dart';
 import 'package:commanders/globals.dart';
 import 'package:flame/components.dart';
@@ -10,7 +11,8 @@ class Base extends RectangleComponent with TapCallbacks, HasGameReference<Comman
   BaseStatus status = BaseStatus.neutral;
   
   Color color;
-  //Color get color => status == BaseStatus.neutral ? Colors.grey : status == BaseStatus.mine ? Colors.green : Colors.red;
+  bool isProduceBotsPermanent = false;
+  bool isCaptureBases = true, isShootEnemies = true, isWeaponInstalled = true;
 
   @override
   void update(double dt) {
@@ -22,6 +24,9 @@ class Base extends RectangleComponent with TapCallbacks, HasGameReference<Comman
     } else if (status == BaseStatus.enemies) {
       paint.color = Colors.red;
     }
+    if (isProduceBotsPermanent) {
+      produceBot();
+    }
   }
 
   @override
@@ -31,5 +36,44 @@ class Base extends RectangleComponent with TapCallbacks, HasGameReference<Comman
       pressedBase = this;
       game.overlays.add('BasePage');
     }
+  }
+  
+  Future<void> produceBot() async {
+    if (isProduceBotsPermanent) {
+      if (status == BaseStatus.mine) {
+        if (freePlayersConstructionBlocks >= getCost()) {
+          freePlayersConstructionBlocks--;
+          game.world.add(Bot(
+            velocity: Vector2.zero(),
+            position: position,
+            radius: 10,
+            status: BotStatus.mine,
+          )..isCaptureBases = isCaptureBases
+          ..isShootEnemies = isShootEnemies
+          ..isWeaponInstalled = isWeaponInstalled);
+          await game.lifecycleEventsProcessed;
+        }
+      }
+      else if (status == BaseStatus.enemies) {
+        if (freeComputersConstructionBlocks >= 4) {
+          freeComputersConstructionBlocks -= 4;
+          game.world.add(Bot(
+            velocity: Vector2.zero(),
+            position: position,
+            radius: 10,
+            status: BotStatus.enemies,
+          )..isCaptureBases = isCaptureBases
+          ..isShootEnemies = isShootEnemies
+          ..isWeaponInstalled = isWeaponInstalled);
+          await game.lifecycleEventsProcessed;
+        }
+      }
+    }
+  }
+  
+  int getCost() {
+    int cost = 1;
+    cost += isWeaponInstalled ? 1 : 0;
+    return cost;
   }
 }

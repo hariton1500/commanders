@@ -77,24 +77,32 @@ class Bot extends CircleComponent with CollisionCallbacks, HasGameRef<Commanders
     if (targetBase != null && position.distanceTo(targetBase!.position) <= 2) {
       print('got target base');
       targetBase?.status = status == BotStatus.mine ? BaseStatus.mine : BaseStatus.enemies;
+      if (status == BotStatus.enemies) {
+        targetBase?.isProduceBotsPermanent = true;
+      }
     }
 
     //if enemy bot in range = weaponRange and installed weapon and isShootEnemies is true and rocket is null, create rocket
     if (isWeaponInstalled && isShootEnemies && rocket == null) {
       //find closest enemy bot
-      Bot? closestEnemyBot = game.world.children.query<Bot>().where((element) => element.status != status && element.status != BotStatus.neutral).reduce((value, element) => (value.position - position).length < (element.position - position).length ? value : element);
-      //check if closest enemy bot is in range
-      if (position.distanceTo(closestEnemyBot.position) <= weaponRange) {
-        //create rocket
-        rocket = Rocket(
-          targetBot: closestEnemyBot,
-          shooterBot: this,
-          velocity: Vector2.zero(),
-          position: position,
-          radius: rocketRadius,
-        );
-        game.world.add(rocket!);
+      try {
+        Bot? closestEnemyBot = game.world.children.query<Bot>().where((element) => element.status != status && element.status != BotStatus.neutral).reduce((value, element) => (value.position - position).length < (element.position - position).length ? value : element);
+        //check if closest enemy bot is in range
+        if (position.distanceTo(closestEnemyBot.position) <= weaponRange) {
+          //create rocket
+          rocket = Rocket(
+            targetBot: closestEnemyBot,
+            shooterBot: this,
+            velocity: Vector2.zero(),
+            position: position,
+            radius: rocketRadius,
+          );
+          game.world.add(rocket!);
+        }
+      } catch (e) {
+        
       }
+      
     }
     
 

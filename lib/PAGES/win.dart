@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class WinPage extends StatelessWidget {
-  const WinPage({super.key, required this.game});
+  const WinPage({super.key, required this.game, required this.isWin});
   final CommandersGame game;
+  final bool isWin;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class WinPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text('You win!'),
+              Text('You ${isWin ? 'win' : 'lose'}!'),
               //show game time
               Text('Game time: ${DateTime.now().difference(startGameTime).inSeconds} seconds'),
               Text('You have $freePlayersConstructionBlocks blocks left.'),

@@ -51,7 +51,7 @@ class _GamePageState extends State<GamePage> {
                       game: game,
                       overlayBuilderMap: {
                         'BasePage': (_, game_) => BasePage(game: game, base: pressedBase),
-                        'WinPage': (_, game_) => WinPage(game: game),
+                        'WinPage': (_, game_) => WinPage(game: game, isWin: isWin,),
                       },
                     ),
                   ),

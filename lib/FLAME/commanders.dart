@@ -41,6 +41,17 @@ class CommandersGame extends FlameGame with HasCollisionDetection, TapDetector {
       world.removeAll(world.children.query<Base>());
       world.removeAll(world.children.query<Bot>());
       world.removeAll(world.children.query<Rocket>());
+      isWin = true;
+      world.children.query<PlayArea>().first.game.overlays.add('WinPage');
+    }
+    //if lose
+    if (world.children.query<Base>().where((element) => element.status == BaseStatus.enemies).length == basesCount) {
+      //lose
+      //show lose screen
+      world.removeAll(world.children.query<Base>());
+      world.removeAll(world.children.query<Bot>());
+      world.removeAll(world.children.query<Rocket>());
+      isWin = false;
       world.children.query<PlayArea>().first.game.overlays.add('WinPage');
     }
     int myBases = world.children.query<Base>().where((element) => element.status == BaseStatus.mine).length;
@@ -48,14 +59,31 @@ class CommandersGame extends FlameGame with HasCollisionDetection, TapDetector {
     int pastSecs = DateTime.now().difference(lastUpdate).inSeconds;
     if (pastSecs >= 1) {
       //print('1 second passed');
-      freePlayersConstructionBlocks += (myBases / 10);
-      freeComputersConstructionBlocks += (enemiesBases / 10);
+      freePlayersConstructionBlocks += (sqrt(myBases) / 10);
+      freeComputersConstructionBlocks += (sqrt(enemiesBases) / 10);
       lastUpdate = DateTime.now();
     }
-    //world.update(dt);
+    /*
+    //производить вражеских роботов в зависимости от кол-ва свободных блоков у компьютера в комплектации с орудием и режимом стрельбы и захвата баз
+    if (enemiesBases > 0 && freeComputersConstructionBlocks >= 4) {
+      //производить вражеских роботов в зависимости от кол-ва свободных блоков у компьютера в комплектации с орудием и режимом стрельбы и захвата баз
+      //на последней базе врага создается еще один робот
+      world.add(
+        Bot(
+          velocity: Vector2.zero(),
+          position: world.children.query<Base>().where((element) => element.status == BaseStatus.enemies).last.position,
+          radius: botRadius,
+          status: BotStatus.enemies
+        )..isCaptureBases = true
+        ..isShootEnemies = true
+        ..isWeaponInstalled = true
+      );
+      freeComputersConstructionBlocks -= 4;
+    }*/
   }
   
   void startGame() {
+    cleanGlobalVars();
     world.removeAll(world.children.query<Base>());
     world.removeAll(world.children.query<Bot>());
     world.removeAll(world.children.query<Rocket>());

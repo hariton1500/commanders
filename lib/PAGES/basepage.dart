@@ -15,11 +15,21 @@ class BasePage extends StatefulWidget {
 }
 
 int botConstructionCosts = 1;
-bool isWeaponInstalled = false;
-bool isCaptureBases = true;
-bool isShootEnemies = false;
+late bool isWeaponInstalled;
+late bool isCaptureBases;
+late bool isShootEnemies;
+late bool isProduceBotsPermanent;
 
 class _BasePageState extends State<BasePage> {
+
+  @override
+  void initState() {
+    super.initState();
+    isWeaponInstalled = widget.base.isWeaponInstalled;
+    isCaptureBases = widget.base.isCaptureBases;
+    isShootEnemies = widget.base.isShootEnemies;
+    isProduceBotsPermanent = widget.base.isProduceBotsPermanent;
+  }
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -69,6 +79,14 @@ class _BasePageState extends State<BasePage> {
               title: const Text('Shoot enemies'),
               subtitle: const Text('This bot will try to shoot enemies.'),
               ),
+              SwitchListTile(value: isProduceBotsPermanent, onChanged: (value) {
+                setState(() {
+                  isProduceBotsPermanent = value;
+                });
+              },
+              title: const Text('Produce bots permanently'),
+              subtitle: const Text('This base will produce bots permanently.'),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -84,8 +102,13 @@ class _BasePageState extends State<BasePage> {
                           radius: botRadius,
                           status: BotStatus.mine,
                         )..isCaptureBases = isCaptureBases
-                        ..isShootEnemies = isShootEnemies);
+                        ..isShootEnemies = isShootEnemies
+                        ..isWeaponInstalled = isWeaponInstalled);
                         await widget.game.lifecycleEventsProcessed;
+                        pressedBase.isCaptureBases = isCaptureBases;
+                        pressedBase.isShootEnemies = isShootEnemies;
+                        pressedBase.isWeaponInstalled = isWeaponInstalled;
+                        pressedBase.isProduceBotsPermanent = isProduceBotsPermanent;
                       }
                     },
                     child: const Text('Build this bot')

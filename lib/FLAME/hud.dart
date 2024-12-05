@@ -23,8 +23,8 @@ class Hud extends PositionComponent with HasGameReference<CommandersGame> {
   @override
   Future<void> onLoad() async {
     super.onLoad();
-    String fbp = freePlayersConstructionBlocks.floor().toRadixString(0);
-    String fcb = freeComputersConstructionBlocks.floor().toStringAsFixed(0);
+    String fbp = freePlayersConstructionBlocks.floor().toString();
+    String fcb = freeComputersConstructionBlocks.floor().toString();
     _blocks = TextComponent(
       text: 'Blocks: $fbp / $fcb',
       textRenderer: TextPaint(
